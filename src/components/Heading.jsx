@@ -30,12 +30,12 @@ function Heading() {
                 </div>
                 <div className="mt-8">
                     <div className="flex flex-row items-center justify-between">
-                        <a className="button text-sm inline-flex items-center gap-2 font-bold" href="">
+                        <a className="button text-xs inline-flex items-center gap-2 font-bold" href="">
                             Let's work together
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
-                                width="16"
-                                height="16"
+                                width="12"
+                                height="12"
                                 viewBox="0 0 24 24"
                                 fill="none"
                                 stroke="#E9E7E2"
@@ -50,9 +50,9 @@ function Heading() {
                             </svg>
                         </a>
                         <div className="flex flex-row gap-4">
-                            <a className="text-sm font-bold" href="">github</a>
-                            <a className="text-sm font-bold" href="">x</a>
-                            <a className="text-sm font-bold" href="">linkedin</a>
+                            <a className="text-xs font-bold" href="">github</a>
+                            <a className="text-xs font-bold" href="">x</a>
+                            <a className="text-xs font-bold" href="">linkedin</a>
                         </div>
                     </div>
                 </div>
