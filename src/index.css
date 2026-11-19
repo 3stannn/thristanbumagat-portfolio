@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+* {
+  font-family: "Inter Tight", sans-serif;
+}
+
+::selection {
+  background-color: #141412;
+  color: #E9E7E2;
+}
+
+body {
+  background-color: #E9E7E2;
+}
+
+.button {
+  background-color: #141412;
+  color: #E9E7E2;
+  padding: 12px 16px;
+  border-radius: 100px;
+}
+
+a {
+  color: #757576;
+}
