@@ -249,3 +249,45 @@ a:hover {
   width: 18px;
   background-color: var(--fg);
 }
+
+/* custom cursor (see Cursor.jsx): white dot + difference blend = inverts what's under it */
+html.has-custom-cursor,
+html.has-custom-cursor * {
+  cursor: none !important;
+}
+
+.custom-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  pointer-events: none;
+  mix-blend-mode: difference;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.custom-cursor.is-visible {
+  opacity: 1;
+}
+
+.custom-cursor > span {
+  display: block;
+  width: 20px;
+  height: 20px;
+  border-radius: 100px;
+  background-color: #fff;
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.custom-cursor.is-hovering > span {
+  transform: scale(2.2);
+}
+
+.custom-cursor.is-pressed > span {
+  transform: scale(0.7);
+}
+
+.custom-cursor.is-hovering.is-pressed > span {
+  transform: scale(1.8);
+}

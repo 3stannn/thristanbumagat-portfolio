@@ -33,13 +33,13 @@ function Heading() {
                     <span className="font-bold text-2xl">Hello!</span>
                 </div>
                 <div className="mt-4 flex flex-col gap-4">
-                    <span className="font-bold text-sm text-(--muted)">
+                    <span className="font-semibold text-sm text-(--muted)">
                         I'm Thristan, a Freelance Developer. 3rd year Computer Science
                         student, aspiring software engineer. Building clean full-stack
                         platforms, bridging frontier AI models with agentic tooling, and
                         architecting normalized relational backends. <br />
                     </span>
-                    <span className="font-bold text-sm text-(--muted)">
+                    <span className="font-semibold text-sm text-(--muted)">
                         I built Tally, a local-only Windows CRM for solo devs. Track
                         clients, projects, deadlines, and payments alongside GitHub
                         monitoring in one app.
