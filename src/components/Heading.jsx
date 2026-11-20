@@ -50,7 +50,7 @@ function Heading() {
                     <div className="flex flex-row items-center justify-between">
                         <a
                             className="button text-sm inline-flex items-center gap-2 font-semibold"
-                            href=""
+                            href="#contact"
                         >
                             Let's work together
                             <svg
@@ -112,8 +112,9 @@ function Heading() {
                     </span>
                 </div>
                 <div className="mt-24">
-                    <div className="flex justify-center items-center">
-                        <img className="w-100 rounded-4xl" src={tallyGif} alt="" srcset="" />
+                    <div className="flex flex-col justify-center items-center">
+                        <span className="text-sm font-bold">Interactive Designs</span>
+                        <img className="mt-4 w-100 rounded-4xl" src={tallyGif} alt="" srcset="" />
                     </div>
                 </div>
             </div>
