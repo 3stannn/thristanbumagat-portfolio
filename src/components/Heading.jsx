@@ -1,5 +1,6 @@
 import devPfp from "../assets/pfp.jpg";
 import ThemeToggle from "./ThemeToggle";
+import tallyGif from "../assets/projects/tally/tallysuggestion.gif"
 
 function Heading() {
     return (
@@ -109,6 +110,11 @@ function Heading() {
                         </svg>
                         Open to Freelance Work and Internship
                     </span>
+                </div>
+                <div className="mt-24">
+                    <div className="flex justify-center items-center">
+                        <img className="w-100 rounded-4xl" src={tallyGif} alt="" srcset="" />
+                    </div>
                 </div>
             </div>
         </div>
