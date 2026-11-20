@@ -2,8 +2,7 @@ const tallyWeb = new URL("../../assets/projects/tally/tally-web.png", import.met
 const kipWeb = new URL("../../assets/projects/kip/kip-web.png", import.meta.url).href;
 
 // `image`: import a screenshot from src/assets (default import, no braces) or use a URL.
-//   All cards share one height; each card's width follows its image's shape,
-//   so desktop screenshots come out wide and phone screenshots narrow.
+//   The cover keeps its aspect ratio within the available card width and height.
 // `background`: a CSS color/gradient, used as the card when there's no image.
 
 const projects = [
@@ -21,7 +20,7 @@ const projects = [
             "Integrated GitHub monitoring so developers can follow repository activity alongside their client work.",
         ],
         image: [tallyWeb],
-        coverSize: { width: 2560, height: 1664 },
+        coverSize: { width: 1920, height: 1080 },
         background: "#F6F6F6",
     },
     {
@@ -37,7 +36,7 @@ const projects = [
             "Built a command playground to help developers find a workflow and draft a prompt for their task.",
         ],
         image: [kipWeb],
-        coverSize: { width: 2560, height: 1664 },
+        coverSize: { width: 1920, height: 1080 },
         background: "#F6F6F6",
     },
 ];

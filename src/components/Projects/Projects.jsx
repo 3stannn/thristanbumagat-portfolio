@@ -26,8 +26,6 @@ function ProjectCard({ project, playing, active }) {
         <a
             className="project-card no-underline block shrink-0"
             href={projectPath(project.slug)}
-            target="_blank"
-            rel="noopener"
             aria-labelledby={`project-title-${project.slug}`}
             tabIndex={active ? 0 : -1}
             draggable={false}
@@ -38,7 +36,7 @@ function ProjectCard({ project, playing, active }) {
                 style={{ background: images.length ? undefined : project.background }}
             >
                 {images.length ? (
-                    // The first screenshot sets the card's width; the rest are stacked on top and swap instantly.
+                    // The cover sets the card's size; later screenshots fit within it.
                     images.map((src, i) => (
                         <img
                             key={src}
@@ -46,7 +44,7 @@ function ProjectCard({ project, playing, active }) {
                             alt=""
                             draggable="false"
                             {...(i === 0 ? project.coverSize : undefined)}
-                            className={`project-slide ${i === 0 ? "block" : "absolute inset-0 h-full w-full object-cover"} ${i === current ? "is-shown" : ""}`}
+                            className={`project-slide ${i === 0 ? "block" : "absolute inset-0 h-full w-full object-contain"} ${i === current ? "is-shown" : ""}`}
                         />
                     ))
                 ) : (

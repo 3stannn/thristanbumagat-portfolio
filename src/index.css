@@ -221,6 +221,9 @@ a:not(.button, .brand, .no-underline):focus-visible {
 .project-track {
   /* Text column width (max-w-2xl px-8). The rail is centered on each card by the scroll handler. */
   --col: min(calc(100vw - 4rem), 38rem);
+  --card-max-w: calc(100vw - 2rem);
+  /* Limit the height so the pinned section fits on short screens. */
+  --card-h: min(44rem, calc(100vh - 12rem), calc(var(--card-max-w) / 1.6));
   overflow-x: clip; /* only vertical page scroll moves the rail */
 }
 
@@ -233,16 +236,9 @@ a:not(.button, .brand, .no-underline):focus-visible {
   will-change: transform;
 }
 
-/* every card is the same height; width follows the screenshot's shape */
-.project-track {
-  /* card height: 44rem (704px) max, but shrinks so the pinned section fits short screens
-     and a laptop-shaped screenshot still fits narrow (phone) screens */
-  --card-h: min(44rem, calc(100vh - 12rem), calc((100vw - 2rem) / 1.6));
-}
-
 .project-card {
   width: min-content; /* as wide as its image; the text below wraps to fit */
-  max-width: calc(100vw - 2rem);
+  max-width: var(--card-max-w);
   color: var(--fg);
 }
 
@@ -255,16 +251,12 @@ a:not(.button, .brand, .no-underline):focus-visible {
   outline-offset: 3px;
 }
 
-.project-media {
-  height: var(--card-h);
-  max-width: calc(100vw - 2rem);
-}
-
-/* the first screenshot sets the card size; extra ones stack on top of it */
+/* The cover sets the card size and scales down proportionally within both limits. */
 .project-media img:first-child {
-  height: var(--card-h);
   width: auto;
-  max-width: none; /* Tailwind's img max-width:100% would squash it */
+  height: auto;
+  max-width: var(--card-max-w);
+  max-height: var(--card-h);
 }
 
 /* only the current screenshot is drawn; the first one still reserves the card's size */
@@ -278,6 +270,7 @@ a:not(.button, .brand, .no-underline):focus-visible {
 
 .project-media.is-placeholder {
   width: calc(var(--card-h) * 1.6);
+  height: var(--card-h);
 }
 
 /* title/tags/link line up with the text column above */

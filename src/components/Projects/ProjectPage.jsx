@@ -20,7 +20,6 @@ export default function ProjectPage({ project, nextProject }) {
                             <a
                                 className="no-underline nav-link inline-flex items-center gap-1.5 text-sm font-bold"
                                 href={project.site}
-                                target="_blank"
                                 rel="noreferrer"
                             >
                                 Visit site <ProjectArrow direction="external" />
@@ -33,13 +32,13 @@ export default function ProjectPage({ project, nextProject }) {
 
             <main className="project-page">
                 <header className="mx-auto max-w-2xl px-4 pt-8 sm:px-8 sm:pt-12">
-                    <h1 className="leading-tight font-bold tracking-tight sm:text-5xl">
+                    <h1 className="text-3xl leading-tight font-bold tracking-tight max-sm:text-balance sm:text-5xl">
                         {project.title}
                     </h1>
                     <p className="mt-4 text-xs font-semibold text-(--project-muted)">
                         {[project.role, project.period].filter(Boolean).join(" · ")}
                     </p>
-                    <p className="mt-2 text-base leading-relaxed sm:text-sm font-bold">{project.summary}</p>
+                    <p className="mt-2 text-base leading-relaxed text-sm">{project.summary}</p>
                     <p className="mt-2 text-xs font-semibold text-(--project-muted)">{project.tags.join(" · ")}</p>
                 </header>
 
