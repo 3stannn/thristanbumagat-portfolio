@@ -21,7 +21,7 @@ function Navbar() {
                     {/* signature tinted with currentColor via mask so it follows the theme */}
                     <span
                         aria-hidden="true"
-                        className="block h-10 aspect-[896/512] bg-current"
+                        className="block h-10 aspect-896/512 bg-current"
                         style={{
                             maskImage: `url(${kodekzSig})`,
                             WebkitMaskImage: `url(${kodekzSig})`,

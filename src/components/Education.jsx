@@ -7,7 +7,7 @@ function Edcation() {
                     <div className="px-2 py-2 flex flex-row justify-between items-center">
                         <div className="flex flex-col">
                             <span className="text-sm font-bold">Tarlac State University</span>
-                            <span className="text-xs font-medium">Bachelor of Science in Computer Science</span>
+                            <span className="text-xs text-(--muted) font-medium">Bachelor of Science in Computer Science</span>
                         </div>
                         <span className="text-xs font-bold text-(--muted)">2024 - now</span>
                     </div>

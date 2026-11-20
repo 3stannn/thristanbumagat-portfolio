@@ -18,7 +18,7 @@ function Experience() {
                             <span className="text-xs font-bold text-(--muted)">{exp.org}</span>
                             <div className="flex flex-col">
                                 {exp.project && <span className="text-sm font-bold">{exp.project}</span>}
-                                <span className="text-xs font-medium">{exp.role}</span>
+                                <span className="text-xs font-medium text-(--muted)">{exp.role}</span>
                             </div>
                             <span className="text-xs font-bold text-(--muted) text-right">{exp.period}</span>
                         </div>
