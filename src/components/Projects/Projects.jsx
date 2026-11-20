@@ -77,7 +77,7 @@ function ProjectCard({ project, playing }) {
                 </div>
                 {project.link && (
                     <a
-                        className="inline-flex shrink-0 items-center gap-1 text-xs font-bold"
+                        className="no-underline inline-flex shrink-0 items-center gap-1 text-xs font-bold"
                         href={project.link}
                         target="_blank"
                         rel="noreferrer"
@@ -260,7 +260,7 @@ function Projects() {
                     role="region"
                     aria-label="Selected projects"
                 >
-                    <div ref={railRef} className="project-rail flex gap-4">
+                    <div ref={railRef} className="project-rail flex gap-2">
                         {projects.map((project) => (
                             <ProjectCard key={project.title} project={project} playing={inView} />
                         ))}

@@ -79,10 +79,10 @@ nav {
   top: 0;
   left: 0;
   right: 0;
-  height: 7rem;
+  height: 4.5rem;
   pointer-events: none;
-  /* light wash of the page color that fades out toward the bottom */
-  background: linear-gradient(to bottom, rgba(var(--bg-rgb), 0.85) 0%, rgba(var(--bg-rgb), 0.5) 45%, rgba(var(--bg-rgb), 0) 100%);
+  /* no color wash: pure blur, so it blends over both light and dark content */
+  background: transparent;
 }
 
 /* stacked blur layers, each masked to a shorter band, so blur increases toward the top */
@@ -92,27 +92,27 @@ nav {
 }
 
 .nav-blur > div:nth-child(1) {
-  backdrop-filter: blur(1px);
-  -webkit-backdrop-filter: blur(1px);
-  mask-image: linear-gradient(to bottom, #000 0%, #000 50%, transparent 100%);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 35%, transparent 100%);
 }
 
 .nav-blur > div:nth-child(2) {
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
-  mask-image: linear-gradient(to bottom, #000 0%, #000 40%, transparent 80%);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 20%, transparent 85%);
 }
 
 .nav-blur > div:nth-child(3) {
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  mask-image: linear-gradient(to bottom, #000 0%, #000 30%, transparent 60%);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 8%, transparent 65%);
 }
 
 .nav-blur > div:nth-child(4) {
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  mask-image: linear-gradient(to bottom, #000 0%, #000 20%, transparent 45%);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  mask-image: linear-gradient(to bottom, #000 0%, transparent 45%);
 }
 
 nav a.nav-link {
@@ -140,13 +140,33 @@ html {
   text-decoration: none;
 }
 
+/* animated underline: a 1px line drawn as a background that grows from the left on hover
+   and retracts to the right on leave (works across wrapped lines too).
+   .button, .brand and .no-underline links get none. */
 a {
   color: var(--muted);
+  text-decoration: none;
 }
 
-a:hover {
-  text-decoration: underline;
-  text-underline-offset: 4px;
+a:not(.button, .brand, .no-underline) {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 100% 100%;
+  background-size: 0% 1px;
+  padding-bottom: 2px;
+  transition: background-size 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+a:not(.button, .brand, .no-underline):hover,
+a:not(.button, .brand, .no-underline):focus-visible {
+  background-position: 0% 100%;
+  background-size: 100% 1px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  a:not(.button, .brand, .no-underline) {
+    transition: none;
+  }
 }
 
 /* Projects horizontal scroller */

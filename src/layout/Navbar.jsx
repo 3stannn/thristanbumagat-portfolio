@@ -15,7 +15,7 @@ function Navbar() {
                 <div />
             </div>
             <div className="relative px-8 py-4 flex flex-row justify-between items-center">
-                <a href="#about" className="nav-link font-bold text-sm">
+                <a href="#about" className="brand nav-link font-bold text-sm">
                     Kodekz
                 </a>
                 <div className="flex flex-row gap-8">
