@@ -3,7 +3,7 @@
 /* theme tokens: light by default, swapped by the .dark class on <html> */
 :root {
   --bg: #F6F6F6;
-  --fg: #141412;
+  --fg: #171717;
   --muted: #757576;
   --line: #d9d9d7;
   --bg-rgb: 246, 246, 246;
@@ -11,7 +11,7 @@
 }
 
 :root.dark {
-  --bg: #141412;
+  --bg: #171717;
   --fg: #F6F6F6;
   --muted: #9a9a98;
   --line: #3a3a38;
@@ -111,27 +111,37 @@ nav {
 }
 
 .nav-blur > div:nth-child(1) {
-  backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
   mask-image: linear-gradient(to bottom, #000 0%, #000 35%, transparent 100%);
 }
 
 .nav-blur > div:nth-child(2) {
-  backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
   mask-image: linear-gradient(to bottom, #000 0%, #000 20%, transparent 85%);
 }
 
 .nav-blur > div:nth-child(3) {
-  backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
   mask-image: linear-gradient(to bottom, #000 0%, #000 8%, transparent 65%);
 }
 
 .nav-blur > div:nth-child(4) {
-  backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
   mask-image: linear-gradient(to bottom, #000 0%, transparent 45%);
+}
+
+/* On narrow project pages, screenshots can pass directly behind the links. */
+@media (max-width: 64rem) {
+  .project-navbar .nav-blur::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, color-mix(in srgb, var(--bg) 76%, transparent) 3rem, transparent);
+  }
 }
 
 nav a.nav-link {
@@ -209,18 +219,14 @@ a:not(.button, .brand, .no-underline):focus-visible {
 
 /* Projects horizontal scroller */
 .project-track {
-  /* --col: text column width (max-w-2xl px-8). --card: image width.
-     Cards are centered on the column, overhanging it by --bleed on each side. */
+  /* Text column width (max-w-2xl px-8). The rail is centered on each card by the scroll handler. */
   --col: min(calc(100vw - 4rem), 38rem);
-  /* also shrinks on short screens so the pinned section fits, but never narrower than the column */
-  --card: max(var(--col), min(calc(100vw - 2rem), 46rem, calc((100vh - 14rem) * 1.6)));
-  --bleed: calc((var(--card) - var(--col)) / 2);
-  --column-inset: max(2rem, calc((100vw - 42rem) / 2 + 2rem));
-  --track-inset: calc(var(--column-inset) - var(--bleed));
-  padding-left: var(--track-inset);
-  padding-right: var(--track-inset);
-  overflow-x: hidden; /* position is driven by vertical page scroll */
-  outline: none;
+  overflow-x: clip; /* only vertical page scroll moves the rail */
+}
+
+.project-track:focus-visible {
+  outline: 2px solid var(--fg);
+  outline-offset: -2px;
 }
 
 .project-rail {
@@ -237,6 +243,17 @@ a:not(.button, .brand, .no-underline):focus-visible {
 .project-card {
   width: min-content; /* as wide as its image; the text below wraps to fit */
   max-width: calc(100vw - 2rem);
+  color: var(--fg);
+}
+
+.project-card:is(:hover, :focus-visible) .project-card-action {
+  color: var(--fg);
+  text-decoration: underline;
+}
+
+.project-card:focus-visible .project-media {
+  outline: 2px solid var(--fg);
+  outline-offset: 3px;
 }
 
 .project-media {
@@ -266,8 +283,8 @@ a:not(.button, .brand, .no-underline):focus-visible {
 
 /* title/tags/link line up with the text column above */
 .project-meta {
-  padding-left: var(--bleed);
-  padding-right: var(--bleed);
+  max-width: var(--col);
+  margin-inline: auto;
   flex-wrap: wrap;
 }
 
@@ -284,7 +301,8 @@ a:not(.button, .brand, .no-underline):focus-visible {
   transition: background-color 0.15s, color 0.15s, opacity 0.15s;
 }
 
-.project-nav:hover:not(:disabled) {
+.project-nav:hover:not(:disabled),
+.project-next:is(:hover, :focus-visible) .project-nav {
   background-color: var(--fg);
   color: var(--bg);
 }
@@ -308,6 +326,14 @@ a:not(.button, .brand, .no-underline):focus-visible {
   background-color: var(--fg);
 }
 
+.project-page {
+  --project-muted: color-mix(in srgb, var(--muted) 90%, var(--fg));
+}
+
+.project-next {
+  color: var(--fg);
+}
+
 /* custom cursor (see Cursor.jsx): white dot + difference blend = inverts what's under it */
 html.has-custom-cursor,
 html.has-custom-cursor * {
@@ -329,7 +355,7 @@ html.has-custom-cursor * {
   opacity: 1;
 }
 
-.custom-cursor > span {
+.custom-cursor-dot {
   display: block;
   width: 20px;
   height: 20px;
@@ -338,14 +364,60 @@ html.has-custom-cursor * {
   transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.custom-cursor.is-hovering > span {
+.custom-cursor.is-hovering .custom-cursor-dot {
   transform: scale(2.2);
 }
 
-.custom-cursor.is-pressed > span {
+.custom-cursor.is-pressed .custom-cursor-dot {
   transform: scale(0.7);
 }
 
-.custom-cursor.is-hovering.is-pressed > span {
+.custom-cursor.is-hovering.is-pressed .custom-cursor-dot {
   transform: scale(1.8);
+}
+
+.custom-cursor-project {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  place-items: center;
+  width: 76px;
+  height: 76px;
+  border: 1px solid color-mix(in srgb, var(--bg) 45%, transparent);
+  border-radius: 50%;
+  background: var(--fg);
+  color: var(--bg);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.56);
+  transition: opacity 0.18s, transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.custom-cursor.is-project-hover {
+  mix-blend-mode: normal;
+}
+
+.custom-cursor.is-project-hover .custom-cursor-dot {
+  visibility: hidden;
+}
+
+.custom-cursor.is-project-hover .custom-cursor-project {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.custom-cursor.is-project-hover.is-pressed .custom-cursor-project {
+  transform: translate(-50%, -50%) scale(0.9);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .custom-cursor,
+  .custom-cursor-dot,
+  .custom-cursor-project {
+    transition: none;
+  }
 }

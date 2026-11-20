@@ -1,31 +1,11 @@
-import { useEffect, useRef, useState } from "react";
-import projects from "./projectsData";
-
-function Arrow({ direction = "right" }) {
-    return (
-        <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="14"
-            height="14"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="3"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            aria-hidden="true"
-            className={direction === "left" ? "rotate-180" : ""}
-        >
-            <path d="M5 12h14" />
-            <path d="m12 5 7 7-7 7" />
-        </svg>
-    );
-}
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import ProjectArrow from "./ProjectArrow";
+import projects, { projectPath } from "./projectsData";
 
 // How long each screenshot stays up when a project has several.
 const SLIDE_INTERVAL_MS = 2000;
 
-function ProjectCard({ project, playing }) {
+function ProjectCard({ project, playing, active }) {
     // `image` can be one screenshot or an array of them.
     const images = [project.image ?? []].flat();
     const [shown, setShown] = useState(0);
@@ -43,7 +23,13 @@ function ProjectCard({ project, playing }) {
     const current = playing ? shown : 0;
 
     return (
-        <article className="project-card shrink-0">
+        <a
+            className="project-card no-underline block shrink-0"
+            href={projectPath(project.slug)}
+            aria-labelledby={`project-title-${project.slug}`}
+            tabIndex={active ? 0 : -1}
+            draggable={false}
+        >
             <div
                 className={`project-media relative overflow-hidden rounded-2xl ${images.length ? "" : "is-placeholder"}`}
                 // Real screenshots get no background, so no color can show around their rounded edges.
@@ -55,8 +41,9 @@ function ProjectCard({ project, playing }) {
                         <img
                             key={src}
                             src={src}
-                            alt={i === 0 ? project.title : ""}
+                            alt=""
                             draggable="false"
+                            {...(i === 0 ? project.coverSize : undefined)}
                             className={`project-slide ${i === 0 ? "block" : "absolute inset-0 h-full w-full object-cover"} ${i === current ? "is-shown" : ""}`}
                         />
                     ))
@@ -70,23 +57,18 @@ function ProjectCard({ project, playing }) {
             </div>
             <div className="project-meta mt-3 flex flex-row items-start justify-between gap-4">
                 <div className="flex flex-col">
-                    <span className="text-sm font-bold">{project.title}</span>
+                    <span id={`project-title-${project.slug}`} className="text-sm font-bold">
+                        {project.title}
+                    </span>
                     <span className="text-xs font-semibold text-(--muted)">
                         {project.tags.join(" · ")}
                     </span>
                 </div>
-                {project.link && (
-                    <a
-                        className="no-underline inline-flex shrink-0 items-center gap-1 text-xs font-bold"
-                        href={project.link}
-                        target="_blank"
-                        rel="noreferrer"
-                    >
-                        View project <Arrow />
-                    </a>
-                )}
+                <span className="project-card-action inline-flex shrink-0 items-center gap-1 text-xs font-bold text-(--muted)">
+                    View project <ProjectArrow />
+                </span>
             </div>
-        </article>
+        </a>
     );
 }
 
@@ -97,21 +79,13 @@ function Projects() {
     // True while most of the projects block is visible on screen.
     const [inView, setInView] = useState(false);
     const stickyRef = useRef(null);
-    // distance: extra page height for the horizontal travel (one card-width per card after the first).
+    // distance: extra page height for the travel between the first and last card centers.
     // height/top: the pinned block's own height, and the offset that centers it on screen while pinned.
     const [layout, setLayout] = useState({ distance: 0, height: 0, top: 0 });
     const stickyTop = useRef(0);
 
     const railRef = useRef(null);
-
-    // Horizontal position of each card's left edge, relative to the first card.
-    // Cards have different widths, so each one gets its own stop.
-    const cardStops = () => {
-        const cards = railRef.current?.querySelectorAll(".project-card");
-        if (!cards?.length) return [0];
-        const first = cards[0].offsetLeft;
-        return [...cards].map((card) => card.offsetLeft - first);
-    };
+    const cardStops = useRef([0]);
 
     const nearestIndex = (x, stops) => {
         let best = 0;
@@ -125,15 +99,19 @@ function Projects() {
     const pinStart = () =>
         sectionRef.current.getBoundingClientRect().top + window.scrollY - stickyTop.current;
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         const section = sectionRef.current;
+        const track = trackRef.current;
         const rail = railRef.current;
+        const cards = rail.querySelectorAll(".project-card");
         const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
         // How quickly the cards catch up with the page scroll each frame (lower = softer, more glide).
         const ease = reduceMotion ? 1 : 0.09;
+        let startOffset = 0;
         let target = 0;
         let current = 0;
         let frame = null;
+        let mounted = true;
 
         const measure = () => {
             const height = stickyRef.current.offsetHeight;
@@ -141,13 +119,22 @@ function Projects() {
             const navHeight = document.querySelector("nav")?.offsetHeight ?? 0;
             const top = Math.max(navHeight, (window.innerHeight - height) / 2);
             stickyTop.current = top;
-            const stops = cardStops();
-            setLayout({ distance: stops[stops.length - 1], height, top });
+
+            // Use the rendered widths because each screenshot can have a different aspect ratio.
+            const railLeft = rail.getBoundingClientRect().left;
+            const centers = Array.from(cards, (card) => {
+                const { left, width } = card.getBoundingClientRect();
+                return left - railLeft + width / 2;
+            });
+            const firstCenter = centers[0] ?? 0;
+            startOffset = firstCenter - track.clientWidth / 2;
+            const stops = centers.map((center) => center - firstCenter);
+            cardStops.current = stops;
+            setLayout({ distance: stops.at(-1) ?? 0, height, top });
         };
 
         const readTarget = () => {
-            const stops = cardStops();
-            const max = stops[stops.length - 1];
+            const max = cardStops.current.at(-1) ?? 0;
             const pinned = stickyTop.current - section.getBoundingClientRect().top;
             target = Math.min(max, Math.max(0, pinned));
         };
@@ -156,8 +143,8 @@ function Projects() {
             current += (target - current) * ease;
             if (Math.abs(target - current) < 0.1) current = target;
             // Whole pixels keep screenshot edges crisp (no blurry half-pixel seams).
-            rail.style.transform = `translate3d(${-Math.round(current)}px, 0, 0)`;
-            setActive(nearestIndex(current, cardStops()));
+            rail.style.transform = `translate3d(${-Math.round(startOffset + current)}px, 0, 0)`;
+            setActive(nearestIndex(current, cardStops.current));
             frame = current === target ? null : requestAnimationFrame(render);
         };
 
@@ -167,22 +154,31 @@ function Projects() {
         };
 
         const onResize = () => {
+            if (frame !== null) cancelAnimationFrame(frame);
             measure();
             readTarget();
             current = target;
             render();
         };
 
-        measure();
-        readTarget();
-        current = target;
-        render();
+        onResize();
+        // A direct hash visit can resolve before React mounts. Wait for font metrics
+        // so wrapped text on narrow screens has settled before calculating the stop.
+        if (window.location.hash === "#projects") {
+            document.fonts.ready.then(() => {
+                if (!mounted || window.location.hash !== "#projects") return;
+                onResize();
+                window.scrollTo({ top: pinStart(), behavior: "instant" });
+            });
+        }
         window.addEventListener("scroll", onScroll, { passive: true });
         window.addEventListener("resize", onResize);
         // Re-measure when card widths change (e.g. once screenshots finish loading).
         const observer = new ResizeObserver(onResize);
-        observer.observe(rail);
+        observer.observe(stickyRef.current);
+        cards.forEach((card) => observer.observe(card));
         return () => {
+            mounted = false;
             window.removeEventListener("scroll", onScroll);
             window.removeEventListener("resize", onResize);
             observer.disconnect();
@@ -201,17 +197,15 @@ function Projects() {
 
     const scrollToIndex = (index) => {
         const clamped = Math.max(0, Math.min(projects.length - 1, index));
-        window.scrollTo({ top: pinStart() + cardStops()[clamped], behavior: "smooth" });
+        window.scrollTo({ top: pinStart() + cardStops.current[clamped], behavior: "smooth" });
     };
 
     const onKeyDown = (e) => {
-        if (e.key === "ArrowRight") {
-            e.preventDefault();
-            scrollToIndex(active + 1);
-        } else if (e.key === "ArrowLeft") {
-            e.preventDefault();
-            scrollToIndex(active - 1);
-        }
+        if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
+        if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+        e.preventDefault();
+        trackRef.current.focus({ preventScroll: true });
+        scrollToIndex(active + (e.key === "ArrowRight" ? 1 : -1));
     };
 
     return (
@@ -237,7 +231,7 @@ function Projects() {
                                 disabled={active === 0}
                                 aria-label="Previous project"
                             >
-                                <Arrow direction="left" />
+                                <ProjectArrow direction="left" />
                             </button>
                             <button
                                 type="button"
@@ -246,7 +240,7 @@ function Projects() {
                                 disabled={active === projects.length - 1}
                                 aria-label="Next project"
                             >
-                                <Arrow />
+                                <ProjectArrow />
                             </button>
                         </div>
                     </div>
@@ -261,8 +255,13 @@ function Projects() {
                     aria-label="Selected projects"
                 >
                     <div ref={railRef} className="project-rail flex gap-2">
-                        {projects.map((project) => (
-                            <ProjectCard key={project.title} project={project} playing={inView} />
+                        {projects.map((project, index) => (
+                            <ProjectCard
+                                key={project.slug}
+                                project={project}
+                                playing={inView}
+                                active={index === active}
+                            />
                         ))}
                     </div>
                 </div>
@@ -270,7 +269,7 @@ function Projects() {
                 <div className="mt-4 flex flex-row justify-center gap-2">
                     {projects.map((project, i) => (
                         <button
-                            key={project.title}
+                            key={project.slug}
                             type="button"
                             onClick={() => scrollToIndex(i)}
                             aria-label={`Go to ${project.title}`}

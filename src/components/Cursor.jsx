@@ -31,35 +31,45 @@ function Cursor() {
             }
         };
 
+        const onLeave = () => dot.classList.remove("is-visible", "is-pressed", "is-project-hover");
         const onMove = (e) => {
+            if (e.pointerType === "touch") {
+                onLeave();
+                return;
+            }
             target.x = e.clientX;
             target.y = e.clientY;
             dot.classList.add("is-visible");
             dot.classList.toggle("is-hovering", !!e.target.closest?.(HOVER_TARGETS));
+            dot.classList.toggle("is-project-hover", !!e.target.closest?.(".project-card"));
             if (!frame) frame = requestAnimationFrame(render);
         };
-        const onLeave = () => dot.classList.remove("is-visible");
         const onDown = () => dot.classList.add("is-pressed");
         const onUp = () => dot.classList.remove("is-pressed");
 
         window.addEventListener("pointermove", onMove, { passive: true });
+        window.addEventListener("pointerover", onMove, { passive: true });
         document.addEventListener("pointerleave", onLeave);
         window.addEventListener("pointerdown", onDown);
         window.addEventListener("pointerup", onUp);
+        window.addEventListener("pointercancel", onUp);
 
         return () => {
             cancelAnimationFrame(frame);
             root.classList.remove("has-custom-cursor");
             window.removeEventListener("pointermove", onMove);
+            window.removeEventListener("pointerover", onMove);
             document.removeEventListener("pointerleave", onLeave);
             window.removeEventListener("pointerdown", onDown);
             window.removeEventListener("pointerup", onUp);
+            window.removeEventListener("pointercancel", onUp);
         };
     }, []);
 
     return (
         <div ref={dotRef} className="custom-cursor" aria-hidden="true">
-            <span />
+            <span className="custom-cursor-dot" />
+            <span className="custom-cursor-project">View project</span>
         </div>
     );
 }

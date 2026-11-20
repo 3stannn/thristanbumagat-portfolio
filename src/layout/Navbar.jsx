@@ -1,5 +1,6 @@
 import kodekzSig from "../assets/kodekzsig.svg";
 import kodekzSigWhite from "../assets/kodekzsigwhite.svg";
+import NavbarBlur from "./NavbarBlur";
 
 const links = [
     { label: "About", href: "#about" },
@@ -10,13 +11,7 @@ const links = [
 function Navbar() {
     return (
         <nav className="fixed inset-x-0 top-0">
-            {/* progressive blur: strongest at the very top, fading out below the bar */}
-            <div className="nav-blur" aria-hidden="true">
-                <div />
-                <div />
-                <div />
-                <div />
-            </div>
+            <NavbarBlur />
             <div className="relative px-8 py-4 flex flex-row justify-between items-center">
                 <a href="#about" className="brand nav-link" aria-label="Kodekz">
                     {/* dark signature in light mode, white signature in dark mode */}

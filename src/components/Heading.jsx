@@ -48,7 +48,7 @@ function Heading() {
                 <div className="mt-8">
                     <div className="flex flex-row items-center justify-between">
                         <a
-                            className="button text-xs inline-flex items-center gap-2 font-semibold"
+                            className="button text-sm inline-flex items-center gap-2 font-semibold"
                             href=""
                         >
                             Let's work together
