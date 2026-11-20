@@ -71,7 +71,7 @@ function ProjectCard({ project, playing }) {
             <div className="project-meta mt-3 flex flex-row items-start justify-between gap-4">
                 <div className="flex flex-col">
                     <span className="text-sm font-bold">{project.title}</span>
-                    <span className="text-xs font-bold text-(--muted)">
+                    <span className="text-xs font-semibold text-(--muted)">
                         {project.tags.join(" · ")}
                     </span>
                 </div>
