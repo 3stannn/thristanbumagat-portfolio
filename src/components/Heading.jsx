@@ -69,7 +69,7 @@ function Heading() {
                                 <path d="m12 5 7 7-7 7" />
                             </svg>
                         </a>
-                        <div className="flex flex-row gap-4">
+                        <div className="flex flex-row gap-8">
                             <a className="text-xs font-bold" href="">
                                 github
                             </a>
