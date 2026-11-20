@@ -70,8 +70,6 @@ export default function ProjectPage({ project, nextProject }) {
                         <a
                             className="project-next no-underline flex items-center justify-between gap-4 border-t border-(--line) py-6"
                             href={projectPath(nextProject.slug)}
-                            target="_blank"
-                            rel="noopener"
                         >
                             <span className="flex flex-col gap-1">
                                 <span className="text-xs font-semibold text-(--project-muted)">Next project</span>
