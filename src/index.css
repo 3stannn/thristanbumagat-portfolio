@@ -1,5 +1,51 @@
 @import "tailwindcss";
 
+/* theme tokens: light by default, swapped by the .dark class on <html> */
+:root {
+  --bg: #F6F6F6;
+  --fg: #141412;
+  --muted: #757576;
+  --line: #d9d9d7;
+  --bg-rgb: 246, 246, 246;
+  color-scheme: light;
+}
+
+:root.dark {
+  --bg: #141412;
+  --fg: #F6F6F6;
+  --muted: #9a9a98;
+  --line: #3a3a38;
+  --bg-rgb: 20, 20, 18;
+  color-scheme: dark;
+}
+
+/* theme switch: the new theme is revealed as a circle growing from the toggle (see ThemeToggle.jsx) */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-new(root) {
+  z-index: 1;
+}
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 100px;
+  color: var(--fg);
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+.theme-toggle:hover {
+  background-color: rgba(127, 127, 127, 0.15);
+}
+
 html {
   scrollbar-width: none;
 }
@@ -13,17 +59,79 @@ html::-webkit-scrollbar {
 }
 
 ::selection {
-  background-color: #141412;
-  color: #F6F6F6;
+  background-color: var(--fg);
+  color: var(--bg);
 }
 
 body {
-  background-color: #F6F6F6;
+  background-color: var(--bg);
+  color: var(--fg);
+}
+
+/* floating navbar: stays at the top; content scrolling under it blurs and fades
+   gradually (no hard edge), strongest at the top of the screen */
+nav {
+  z-index: 50;
+}
+
+.nav-blur {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 7rem;
+  pointer-events: none;
+  /* light wash of the page color that fades out toward the bottom */
+  background: linear-gradient(to bottom, rgba(var(--bg-rgb), 0.85) 0%, rgba(var(--bg-rgb), 0.5) 45%, rgba(var(--bg-rgb), 0) 100%);
+}
+
+/* stacked blur layers, each masked to a shorter band, so blur increases toward the top */
+.nav-blur > div {
+  position: absolute;
+  inset: 0;
+}
+
+.nav-blur > div:nth-child(1) {
+  backdrop-filter: blur(1px);
+  -webkit-backdrop-filter: blur(1px);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 50%, transparent 100%);
+}
+
+.nav-blur > div:nth-child(2) {
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 40%, transparent 80%);
+}
+
+.nav-blur > div:nth-child(3) {
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 30%, transparent 60%);
+}
+
+.nav-blur > div:nth-child(4) {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 20%, transparent 45%);
+}
+
+nav a.nav-link {
+  color: var(--fg);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* nav links land with the section heading just below the navbar */
+#about,
+#contact {
+  scroll-margin-top: 4rem;
 }
 
 .button {
-  background-color: #141412;
-  color: #F6F6F6;
+  background-color: var(--fg);
+  color: var(--bg);
   padding: 12px 16px;
   border-radius: 100px;
 }
@@ -33,10 +141,111 @@ body {
 }
 
 a {
-  color: #757576;
+  color: var(--muted);
 }
 
 a:hover {
   text-decoration: underline;
   text-underline-offset: 4px;
+}
+
+/* Projects horizontal scroller */
+.project-track {
+  /* --col: text column width (max-w-2xl px-8). --card: image width.
+     Cards are centered on the column, overhanging it by --bleed on each side. */
+  --col: min(calc(100vw - 4rem), 38rem);
+  /* also shrinks on short screens so the pinned section fits, but never narrower than the column */
+  --card: max(var(--col), min(calc(100vw - 2rem), 46rem, calc((100vh - 14rem) * 1.6)));
+  --bleed: calc((var(--card) - var(--col)) / 2);
+  --column-inset: max(2rem, calc((100vw - 42rem) / 2 + 2rem));
+  --track-inset: calc(var(--column-inset) - var(--bleed));
+  padding-left: var(--track-inset);
+  padding-right: var(--track-inset);
+  overflow-x: hidden; /* position is driven by vertical page scroll */
+  outline: none;
+}
+
+.project-rail {
+  will-change: transform;
+}
+
+/* every card is the same height; width follows the screenshot's shape */
+.project-track {
+  /* card height: 44rem (704px) max, but shrinks so the pinned section fits short screens
+     and a laptop-shaped screenshot still fits narrow (phone) screens */
+  --card-h: min(44rem, calc(100vh - 12rem), calc((100vw - 2rem) / 1.6));
+}
+
+.project-card {
+  width: min-content; /* as wide as its image; the text below wraps to fit */
+  max-width: calc(100vw - 2rem);
+}
+
+.project-media {
+  height: var(--card-h);
+  max-width: calc(100vw - 2rem);
+}
+
+/* the first screenshot sets the card size; extra ones stack on top of it */
+.project-media img:first-child {
+  height: var(--card-h);
+  width: auto;
+  max-width: none; /* Tailwind's img max-width:100% would squash it */
+}
+
+/* only the current screenshot is drawn; the first one still reserves the card's size */
+.project-slide {
+  visibility: hidden;
+}
+
+.project-slide.is-shown {
+  visibility: visible;
+}
+
+.project-media.is-placeholder {
+  width: calc(var(--card-h) * 1.6);
+}
+
+/* title/tags/link line up with the text column above */
+.project-meta {
+  padding-left: var(--bleed);
+  padding-right: var(--bleed);
+  flex-wrap: wrap;
+}
+
+.project-nav {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 100px;
+  border: 1px solid var(--line);
+  color: var(--fg);
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s, opacity 0.15s;
+}
+
+.project-nav:hover:not(:disabled) {
+  background-color: var(--fg);
+  color: var(--bg);
+}
+
+.project-nav:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.project-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 100px;
+  background-color: var(--line);
+  cursor: pointer;
+  transition: width 0.2s, background-color 0.2s;
+}
+
+.project-dot.is-active {
+  width: 18px;
+  background-color: var(--fg);
 }
