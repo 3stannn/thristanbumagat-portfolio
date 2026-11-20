@@ -148,6 +148,100 @@ nav a.nav-link {
   color: var(--fg);
 }
 
+.home-nav-toggle,
+.home-nav-backdrop {
+  display: none;
+}
+
+@media (width < 40rem) {
+  .home-nav-panel {
+    display: grid;
+    grid-template-columns: 1fr auto;
+  }
+
+  .home-nav-panel .brand {
+    justify-self: start;
+  }
+
+  .home-nav-toggle {
+    display: grid;
+    place-items: center;
+    min-width: 44px;
+    min-height: 44px;
+    margin-block: -2px;
+    margin-inline-end: -8px;
+    color: var(--fg);
+    font-size: 0.875rem;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .home-nav-links {
+    display: none;
+    grid-column: 1 / -1;
+  }
+
+  .home-navbar[data-menu-open="true"] .home-nav-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgb(0 0 0 / 30%);
+  }
+
+  .home-navbar[data-menu-open="true"] .home-nav-panel {
+    max-height: 100dvh;
+    overflow-y: auto;
+    padding-bottom: 3.5rem;
+    border-radius: 0 0 1.25rem 1.25rem;
+    background-color: var(--bg);
+  }
+
+  .home-navbar[data-menu-open="true"] .home-nav-links {
+    display: grid;
+    gap: 0;
+    margin-top: 1rem;
+  }
+
+  .home-nav-links a.nav-link {
+    padding-block: 0.5rem;
+    background-image: none;
+    font-size: 2rem;
+    line-height: 1.15;
+    letter-spacing: -0.035em;
+  }
+
+  .home-nav-toggle:focus-visible,
+  .home-nav-links a.nav-link:focus-visible {
+    outline: 2px solid var(--fg);
+    outline-offset: 2px;
+  }
+}
+
+@media (width < 40rem) and (prefers-reduced-motion: no-preference) {
+  .home-navbar[data-menu-open="true"] .home-nav-panel {
+    animation: home-nav-drop 260ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .home-navbar[data-menu-open="true"] .home-nav-backdrop {
+    animation: home-nav-fade-in 260ms ease-out;
+  }
+}
+
+@keyframes home-nav-drop {
+  from {
+    clip-path: inset(0 0 calc(100% - 4.5rem) round 0 0 1.25rem 1.25rem);
+  }
+  to {
+    clip-path: inset(0 round 0 0 1.25rem 1.25rem);
+  }
+}
+
+@keyframes home-nav-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
 /* navbar signature: both files stay rendered (stacked in one grid cell) so
    neither has to load/decode mid theme switch; only visibility flips */
 .sig {

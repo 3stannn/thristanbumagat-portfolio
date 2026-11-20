@@ -18,19 +18,34 @@ function Contact() {
                     </div>
                     <div className="flex flex-row py-2 justify-between items-center">
                         <span className="text-xs font-bold text-(--muted)">GitHub</span>
-                        <a className="no-underline text-sm font-semibold" href="https://github.com/3stannn">
+                        <a
+                            className="no-underline text-sm font-semibold"
+                            href="https://github.com/3stannn"
+                            target="_blank"
+                            rel="noopener"
+                        >
                             @3stannn
                         </a>
                     </div>
                     <div className="flex flex-row py-2 justify-between items-center">
                         <span className="text-xs font-bold text-(--muted)">X</span>
-                        <a className="no-underline text-sm font-semibold" href="https://x.com/kodekzz">
+                        <a
+                            className="no-underline text-sm font-semibold"
+                            href="https://x.com/kodekzz"
+                            target="_blank"
+                            rel="noopener"
+                        >
                             @kodekzz
                         </a>
                     </div>
                     <div className="flex flex-row py-2 justify-between items-center">
                         <span className="text-xs font-bold text-(--muted)">Linkedin</span>
-                        <a className="no-underline text-sm font-semibold" href="https://www.linkedin.com/in/thristandavebumagat/">
+                        <a
+                            className="no-underline text-sm font-semibold"
+                            href="https://www.linkedin.com/in/thristandavebumagat/"
+                            target="_blank"
+                            rel="noopener"
+                        >
                             in/thristandavebumagat
                         </a>
                     </div>

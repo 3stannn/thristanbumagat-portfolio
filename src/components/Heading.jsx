@@ -70,13 +70,28 @@ function Heading() {
                             </svg>
                         </a>
                         <div className="flex flex-row gap-8">
-                            <a className="text-xs font-semibold" href="https://github.com/3stannn">
+                            <a
+                                className="text-xs font-semibold"
+                                href="https://github.com/3stannn"
+                                target="_blank"
+                                rel="noopener"
+                            >
                                 github
                             </a>
-                            <a className="text-xs font-semibold" href="https://x.com/kodekzz">
+                            <a
+                                className="text-xs font-semibold"
+                                href="https://x.com/kodekzz"
+                                target="_blank"
+                                rel="noopener"
+                            >
                                 x
                             </a>
-                            <a className="text-xs font-semibold" href="https://www.linkedin.com/in/thristandavebumagat/">
+                            <a
+                                className="text-xs font-semibold"
+                                href="https://www.linkedin.com/in/thristandavebumagat/"
+                                target="_blank"
+                                rel="noopener"
+                            >
                                 linkedin
                             </a>
                         </div>
