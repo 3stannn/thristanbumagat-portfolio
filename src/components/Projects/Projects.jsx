@@ -57,7 +57,7 @@ function ProjectCard({ project, playing, active }) {
                     </div>
                 )}
             </div>
-            <div className="project-meta mt-3 flex flex-row items-start justify-between gap-4">
+            <div className="project-meta mt-4 flex flex-row items-start justify-between gap-4">
                 <div className="flex flex-col">
                     <span id={`project-title-${project.slug}`} className="text-sm font-bold">
                         {project.title}
