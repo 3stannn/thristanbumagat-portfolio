@@ -25,9 +25,15 @@ function ThemeToggle() {
             applyTheme(next);
         };
 
+        const root = document.documentElement;
+        // no element color transitions while switching, so nothing fades mid-reveal
+        root.classList.add("theme-switching");
+        const done = () => root.classList.remove("theme-switching");
+
         const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
         if (!document.startViewTransition || reduceMotion) {
             update();
+            setTimeout(done, 50);
             return;
         }
 
@@ -39,23 +45,14 @@ function ThemeToggle() {
             Math.max(x, window.innerWidth - x),
             Math.max(y, window.innerHeight - y),
         );
+        root.style.setProperty("--vt-x", `${x}px`);
+        root.style.setProperty("--vt-y", `${y}px`);
+        root.style.setProperty("--vt-r", `${radius}px`);
 
         const transition = document.startViewTransition(update);
-        transition.ready.then(() => {
-            document.documentElement.animate(
-                {
-                    clipPath: [
-                        `circle(0px at ${x}px ${y}px)`,
-                        `circle(${radius}px at ${x}px ${y}px)`,
-                    ],
-                },
-                {
-                    duration: 600,
-                    easing: "cubic-bezier(0.4, 0, 0.2, 1)",
-                    pseudoElement: "::view-transition-new(root)",
-                },
-            );
-        });
+        transition.finished.finally(done);
+        // safety net: never leave transitions frozen if the view transition stalls
+        setTimeout(done, 1000);
     };
 
     const isDark = theme === "dark";

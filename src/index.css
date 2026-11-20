@@ -26,8 +26,27 @@
   mix-blend-mode: normal;
 }
 
+/* the reveal runs as a CSS animation (not JS after .ready) so it applies from the
+   very first frame; ThemeToggle sets --vt-x / --vt-y / --vt-r before starting */
 ::view-transition-new(root) {
   z-index: 1;
+  animation: theme-reveal 600ms cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+@keyframes theme-reveal {
+  from {
+    clip-path: circle(0px at var(--vt-x, 50%) var(--vt-y, 50%));
+  }
+  to {
+    clip-path: circle(var(--vt-r, 150vmax) at var(--vt-x, 50%) var(--vt-y, 50%));
+  }
+}
+
+/* freeze per-element color transitions while the theme flips */
+:root.theme-switching *,
+:root.theme-switching *::before,
+:root.theme-switching *::after {
+  transition: none !important;
 }
 
 .theme-toggle {
@@ -117,6 +136,25 @@ nav {
 
 nav a.nav-link {
   color: var(--fg);
+}
+
+/* navbar signature: both files stay rendered (stacked in one grid cell) so
+   neither has to load/decode mid theme switch; only visibility flips */
+.sig {
+  display: grid;
+}
+
+.sig > img {
+  grid-area: 1 / 1;
+}
+
+.sig-dark,
+:root.dark .sig-light {
+  visibility: hidden;
+}
+
+:root.dark .sig-dark {
+  visibility: visible;
 }
 
 html {

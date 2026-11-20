@@ -1,4 +1,5 @@
 import kodekzSig from "../assets/kodekzsig.svg";
+import kodekzSigWhite from "../assets/kodekzsigwhite.svg";
 
 const links = [
     { label: "About", href: "#about" },
@@ -18,21 +19,11 @@ function Navbar() {
             </div>
             <div className="relative px-8 py-4 flex flex-row justify-between items-center">
                 <a href="#about" className="brand nav-link" aria-label="Kodekz">
-                    {/* signature tinted with currentColor via mask so it follows the theme */}
-                    <span
-                        aria-hidden="true"
-                        className="block h-10 aspect-896/512 bg-current"
-                        style={{
-                            maskImage: `url(${kodekzSig})`,
-                            WebkitMaskImage: `url(${kodekzSig})`,
-                            maskSize: "contain",
-                            WebkitMaskSize: "contain",
-                            maskRepeat: "no-repeat",
-                            WebkitMaskRepeat: "no-repeat",
-                            maskPosition: "left center",
-                            WebkitMaskPosition: "left center",
-                        }}
-                    />
+                    {/* dark signature in light mode, white signature in dark mode */}
+                    <span className="sig">
+                        <img src={kodekzSig} alt="" aria-hidden="true" className="sig-light block h-10 aspect-896/512" />
+                        <img src={kodekzSigWhite} alt="" aria-hidden="true" className="sig-dark block h-10 aspect-896/512" />
+                    </span>
                 </a>
                 <div className="flex flex-row gap-8">
                     {links.map((link) => (
