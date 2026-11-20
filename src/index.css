@@ -248,7 +248,6 @@ a:not(.button, .brand, .no-underline):focus-visible {
 
 .project-card:is(:hover, :focus-visible) .project-card-action {
   color: var(--fg);
-  text-decoration: underline;
 }
 
 .project-card:focus-visible .project-media {

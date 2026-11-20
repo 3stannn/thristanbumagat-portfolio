@@ -1,3 +1,6 @@
+import resumeUrl from "../assets/docs/resume.pdf?url";
+import ProjectArrow from "./Projects/ProjectArrow";
+
 function Contact() {
     return (
         <div id="contact" className="mt-12 mb-12">
@@ -15,19 +18,19 @@ function Contact() {
                     </div>
                     <div className="flex flex-row py-2 justify-between items-center">
                         <span className="text-xs font-bold text-(--muted)">GitHub</span>
-                        <a className="no-underline text-sm font-semibold" href="">
+                        <a className="no-underline text-sm font-semibold" href="https://github.com/3stannn">
                             @3stannn
                         </a>
                     </div>
                     <div className="flex flex-row py-2 justify-between items-center">
                         <span className="text-xs font-bold text-(--muted)">X</span>
-                        <a className="no-underline text-sm font-semibold" href="">
+                        <a className="no-underline text-sm font-semibold" href="https://x.com/kodekzz">
                             @kodekzz
                         </a>
                     </div>
                     <div className="flex flex-row py-2 justify-between items-center">
                         <span className="text-xs font-bold text-(--muted)">Linkedin</span>
-                        <a className="no-underline text-sm font-semibold" href="">
+                        <a className="no-underline text-sm font-semibold" href="https://www.linkedin.com/in/thristandavebumagat/">
                             in/thristandavebumagat
                         </a>
                     </div>
@@ -35,25 +38,12 @@ function Contact() {
                         <span className="text-xs font-bold text-(--muted)">Resume</span>
                         <a
                             className="text-sm font-semibold no-underline flex flex-row items-center gap-1"
-                            href=""
+                            href={resumeUrl}
+                            target="_blank"
+                            rel="noopener"
+                            aria-label="View resume (opens in a new tab)"
                         >
-                            Download{" "}
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="12"
-                                height="12"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="#757576"
-                                stroke-width="3"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                class="lucide lucide-arrow-down-to-line preview-icon"
-                            >
-                                <path d="M12 17V3" />
-                                <path d="m6 11 6 6 6-6" />
-                                <path d="M19 21H5" />
-                            </svg>
+                            View <ProjectArrow direction="external" />
                         </a>
                     </div>
                 </div>
