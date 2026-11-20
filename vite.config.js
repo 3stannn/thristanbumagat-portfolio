@@ -33,7 +33,7 @@ const projectPages = {
     order: 'post',
     handler(_, bundle) {
       const page = String(bundle['index.html'].source)
-      const siteName = 'Thristan Dave Bumagat'
+      const siteName = 'Thristan Bumagat'
 
       // Give each project a real entry file so direct visits also work on static hosts,
       // with its own title, description, URL and preview image for link unfurls.

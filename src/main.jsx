@@ -13,7 +13,7 @@ const projectIndex = projects.findIndex(({ slug }) => projectPath(slug) === path
 const project = projects[projectIndex]
 const nextProject = projects.length > 1 ? projects[(projectIndex + 1) % projects.length] : undefined
 
-if (project) document.title = `${project.title} | ${document.title}`
+if (project) document.title = `${project.title} | Thristan Bumagat`
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
