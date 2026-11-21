@@ -40,7 +40,7 @@ export default function ProjectPage({ project, nextProject }) {
                         {[project.role, project.period].filter(Boolean).join(" · ")}
                     </p>
                     <p className="mt-8 leading-relaxed text-sm">{project.summary}</p>
-                    <p className="mt-4 text-xs font-semibold text-(--project-muted)">{project.tags.join(" · ")}</p>
+                    <p className="mt-8 text-xs font-semibold text-(--project-muted)">{project.tags.join(" · ")}</p>
                 </header>
 
                 {images.length > 0 && (
@@ -60,7 +60,7 @@ export default function ProjectPage({ project, nextProject }) {
 
                 <section className="mx-auto mt-8 max-w-2xl px-4 sm:mt-12 sm:px-8" aria-labelledby="project-contributions">
                     <h2 id="project-contributions" className="text-2xl font-bold tracking-tight">What I built</h2>
-                    <div className="mt-12 space-y-2 text-sm leading-relaxed">
+                    <div className="mt-8 space-y-2 text-sm leading-relaxed">
                         {project.contributions.map((contribution) => <p key={contribution}>{contribution}</p>)}
                     </div>
                 </section>
