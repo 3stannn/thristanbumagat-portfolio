@@ -52,10 +52,10 @@ function Navbar() {
             <div className="home-nav-backdrop" aria-hidden="true" onClick={dismissMenu} />
             <div className="home-nav-panel relative px-8 py-4 flex flex-row justify-between items-center">
                 <a
-                    href="#about"
+                    href="#"
                     className="brand nav-link"
                     aria-label="Kodekz"
-                    data-tooltip="Back to the intro"
+                    data-tooltip="Back to top"
                     onClick={closeMenu}
                 >
                     {/* dark signature in light mode, white signature in dark mode */}
