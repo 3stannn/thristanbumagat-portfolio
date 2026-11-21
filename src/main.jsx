@@ -5,6 +5,7 @@ import Navbar from './layout/Navbar.jsx'
 import App from './App.jsx'
 import Footer from './layout/Footer.jsx'
 import Cursor from './components/Cursor.jsx'
+import SiteTooltip from './components/SiteTooltip.jsx'
 import ProjectPage from './components/Projects/ProjectPage.jsx'
 import projects, { projectPath } from './components/Projects/projectsData.js'
 
@@ -27,5 +28,6 @@ createRoot(document.getElementById('root')).render(
     )}
     <Cursor />
     <Footer />
+    <SiteTooltip />
   </StrictMode>,
 )

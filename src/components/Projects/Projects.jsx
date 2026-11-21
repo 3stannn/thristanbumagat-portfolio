@@ -26,6 +26,7 @@ function ProjectCard({ project, playing, active }) {
         <a
             className="project-card no-underline block shrink-0"
             href={projectPath(project.slug)}
+            data-tooltip={`View ${project.title}`}
             aria-labelledby={`project-title-${project.slug}`}
             tabIndex={active ? 0 : -1}
             draggable={false}

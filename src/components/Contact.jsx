@@ -12,6 +12,7 @@ function Contact() {
                         <a
                             className="no-underline text-sm font-semibold"
                             href="mailto:thristandave12@gmail.com"
+                            data-tooltip="Send an email"
                         >
                             thristandave12@gmail.com
                         </a>
@@ -21,6 +22,7 @@ function Contact() {
                         <a
                             className="no-underline text-sm font-semibold"
                             href="https://github.com/3stannn"
+                            data-tooltip="Open GitHub profile"
                             target="_blank"
                             rel="noopener"
                         >
@@ -32,6 +34,7 @@ function Contact() {
                         <a
                             className="no-underline text-sm font-semibold"
                             href="https://x.com/kodekzz"
+                            data-tooltip="Open X profile"
                             target="_blank"
                             rel="noopener"
                         >
@@ -43,6 +46,7 @@ function Contact() {
                         <a
                             className="no-underline text-sm font-semibold"
                             href="https://www.linkedin.com/in/thristandavebumagat/"
+                            data-tooltip="Open LinkedIn profile"
                             target="_blank"
                             rel="noopener"
                         >
@@ -54,6 +58,7 @@ function Contact() {
                         <a
                             className="text-sm font-semibold no-underline flex flex-row items-center gap-1"
                             href={resumeUrl}
+                            data-tooltip="View resume (PDF)"
                             target="_blank"
                             rel="noopener"
                             aria-label="View resume (opens in a new tab)"

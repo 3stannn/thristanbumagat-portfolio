@@ -1,75 +1,56 @@
 import { useEffect, useRef } from "react";
 
-// a white dot that follows the mouse; mix-blend-mode: difference inverts whatever is under it
-const HOVER_TARGETS = "a, button, [role='button'], input, textarea, select, label, .project-dot";
-
 function Cursor() {
-    const dotRef = useRef(null);
+    const cursorRef = useRef(null);
 
     useEffect(() => {
-        // only on devices with a real mouse
-        if (!window.matchMedia("(pointer: fine)").matches) return;
-
-        const dot = dotRef.current;
+        const cursor = cursorRef.current;
         const root = document.documentElement;
-        root.classList.add("has-custom-cursor");
+        const finePointer = window.matchMedia("(any-pointer: fine) and (any-hover: hover)");
+        const listeners = new AbortController();
+        const options = { signal: listeners.signal };
 
-        const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-        const target = { x: -100, y: -100 };
-        const pos = { x: -100, y: -100 };
-        let frame = 0;
-
-        const render = () => {
-            const ease = reduceMotion ? 1 : 0.25;
-            pos.x += (target.x - pos.x) * ease;
-            pos.y += (target.y - pos.y) * ease;
-            dot.style.transform = `translate3d(${pos.x}px, ${pos.y}px, 0) translate(-50%, -50%)`;
-            if (Math.abs(target.x - pos.x) > 0.1 || Math.abs(target.y - pos.y) > 0.1) {
-                frame = requestAnimationFrame(render);
-            } else {
-                frame = 0;
-            }
+        const hide = () => {
+            cursor.classList.remove("is-visible", "is-pressed");
+            root.classList.remove("has-custom-cursor");
         };
 
-        const onLeave = () => dot.classList.remove("is-visible", "is-pressed", "is-project-hover");
-        const onMove = (e) => {
-            if (e.pointerType === "touch") {
-                onLeave();
+        const onMove = (event) => {
+            if (!finePointer.matches || event.pointerType === "touch") {
+                hide();
                 return;
             }
-            target.x = e.clientX;
-            target.y = e.clientY;
-            dot.classList.add("is-visible");
-            dot.classList.toggle("is-hovering", !!e.target.closest?.(HOVER_TARGETS));
-            dot.classList.toggle("is-project-hover", !!e.target.closest?.(".project-card"));
-            if (!frame) frame = requestAnimationFrame(render);
-        };
-        const onDown = () => dot.classList.add("is-pressed");
-        const onUp = () => dot.classList.remove("is-pressed");
 
-        window.addEventListener("pointermove", onMove, { passive: true });
-        window.addEventListener("pointerover", onMove, { passive: true });
-        document.addEventListener("pointerleave", onLeave);
-        window.addEventListener("pointerdown", onDown);
-        window.addEventListener("pointerup", onUp);
-        window.addEventListener("pointercancel", onUp);
+            cursor.style.transform = `translate3d(${event.clientX}px, ${event.clientY}px, 0)`;
+            if (!cursor.classList.contains("is-visible")) {
+                cursor.classList.add("is-visible");
+                root.classList.add("has-custom-cursor");
+            }
+        };
+
+        window.addEventListener("pointermove", onMove, { ...options, passive: true });
+        window.addEventListener("pointerover", onMove, { ...options, passive: true });
+        window.addEventListener("pointerdown", (event) => {
+            onMove(event);
+            if (cursor.classList.contains("is-visible")) cursor.classList.add("is-pressed");
+        }, options);
+        window.addEventListener("pointerup", () => cursor.classList.remove("is-pressed"), options);
+        window.addEventListener("pointercancel", hide, options);
+        window.addEventListener("blur", hide, options);
+        document.addEventListener("pointerleave", hide, options);
+        finePointer.addEventListener("change", hide, options);
 
         return () => {
-            cancelAnimationFrame(frame);
-            root.classList.remove("has-custom-cursor");
-            window.removeEventListener("pointermove", onMove);
-            window.removeEventListener("pointerover", onMove);
-            document.removeEventListener("pointerleave", onLeave);
-            window.removeEventListener("pointerdown", onDown);
-            window.removeEventListener("pointerup", onUp);
-            window.removeEventListener("pointercancel", onUp);
+            listeners.abort();
+            hide();
         };
     }, []);
 
     return (
-        <div ref={dotRef} className="custom-cursor" aria-hidden="true">
-            <span className="custom-cursor-dot" />
-            <span className="custom-cursor-project">View project</span>
+        <div ref={cursorRef} className="custom-cursor" aria-hidden="true">
+            <svg className="custom-cursor-arrow" width="18" height="20" viewBox="-1 -1 18 20" focusable="false">
+                <path d="M.4 1.5a1 1 0 0 1 1.4-1.1l12.4 5.2a1.15 1.15 0 0 1 .05 2.1L8.8 10.1l-2.5 5.4a1.15 1.15 0 0 1-2.15-.16Z" />
+            </svg>
         </div>
     );
 }

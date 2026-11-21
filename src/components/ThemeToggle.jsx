@@ -64,7 +64,7 @@ function ThemeToggle() {
             onClick={toggle}
             className="theme-toggle"
             aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
-            title={isDark ? "Light mode" : "Dark mode"}
+            data-tooltip=""
         >
             {isDark ? (
                 <svg

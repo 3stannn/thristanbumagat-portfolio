@@ -11,7 +11,11 @@ export default function ProjectPage({ project, nextProject }) {
             <nav aria-label="Project navigation" className="project-navbar sticky top-0">
                 <NavbarBlur />
                 <div className="relative flex min-h-18 items-center justify-between gap-4 px-6 py-3 sm:px-8">
-                    <a className="no-underline nav-link inline-flex items-center gap-2 text-sm font-bold" href="/#projects">
+                    <a
+                        className="no-underline nav-link inline-flex items-center gap-2 text-sm font-bold"
+                        href="/#projects"
+                        data-tooltip="Back to all projects"
+                    >
                         <ProjectArrow direction="left" />
                         All projects
                     </a>
@@ -20,6 +24,7 @@ export default function ProjectPage({ project, nextProject }) {
                             <a
                                 className="no-underline nav-link inline-flex items-center gap-1.5 text-sm font-bold"
                                 href={project.site}
+                                data-tooltip="Open project website"
                                 target="_blank"
                                 rel="noreferrer"
                             >
@@ -70,6 +75,7 @@ export default function ProjectPage({ project, nextProject }) {
                         <a
                             className="project-next no-underline flex items-center justify-between gap-4 border-t border-(--line) py-6"
                             href={projectPath(nextProject.slug)}
+                            data-tooltip={`View ${nextProject.title}`}
                         >
                             <span className="flex flex-col gap-1">
                                 <span className="text-xs font-semibold text-(--project-muted)">Next project</span>

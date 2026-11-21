@@ -4,10 +4,10 @@ import kodekzSigWhite from "../assets/kodekzsigwhite.svg";
 import NavbarBlur from "./NavbarBlur";
 
 const links = [
-    { label: "About", href: "#about" },
-    { label: "Projects", href: "#projects" },
-    { label: "Contact", href: "#contact" },
-    { label: "Playground", href: "#" },
+    { label: "About", href: "#about", tooltip: "About" },
+    { label: "Projects", href: "#projects", tooltip: "Browse projects" },
+    { label: "Contact", href: "#contact", tooltip: "See contact details" },
+    { label: "Playground", href: "#", tooltip: "Playground" },
 ];
 
 function Navbar() {
@@ -51,7 +51,13 @@ function Navbar() {
             <NavbarBlur />
             <div className="home-nav-backdrop" aria-hidden="true" onClick={dismissMenu} />
             <div className="home-nav-panel relative px-8 py-4 flex flex-row justify-between items-center">
-                <a href="#about" className="brand nav-link" aria-label="Kodekz" onClick={closeMenu}>
+                <a
+                    href="#about"
+                    className="brand nav-link"
+                    aria-label="Kodekz"
+                    data-tooltip="Back to the intro"
+                    onClick={closeMenu}
+                >
                     {/* dark signature in light mode, white signature in dark mode */}
                     <span className="sig">
                         <img src={kodekzSig} alt="" aria-hidden="true" className="sig-light block h-10 aspect-896/512" />
@@ -88,7 +94,13 @@ function Navbar() {
                 </button>
                 <div id="home-nav-links" className="home-nav-links flex flex-row gap-8">
                     {links.map((link) => (
-                        <a key={link.href} href={link.href} className="nav-link font-bold text-xs" onClick={closeMenu}>
+                        <a
+                            key={link.href}
+                            href={link.href}
+                            className="nav-link font-bold text-xs"
+                            data-tooltip={link.tooltip}
+                            onClick={closeMenu}
+                        >
                             {link.label}
                         </a>
                     ))}
