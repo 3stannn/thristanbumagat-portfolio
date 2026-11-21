@@ -145,7 +145,7 @@ function Heading() {
                                 playsInline
                                 onVolumeChange={(event) => setIsTicketMuted(event.currentTarget.muted)}
                             />
-                            <div className="flex items-center justify-between gap-2">
+                            <div className="flex items-center justify-between gap-2 px-2">
                                 <span className="text-xs text-(--muted) font-semibold">
                                     Ticket Component from Tally
                                 </span>
