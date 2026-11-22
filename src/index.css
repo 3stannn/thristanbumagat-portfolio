@@ -87,6 +87,66 @@ body {
   color: var(--fg);
 }
 
+.design-preview-trigger {
+  aspect-ratio: var(--preview-ratio);
+}
+
+.design-preview-trigger[data-hovered="true"]::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  pointer-events: none;
+  background: rgb(0 0 0 / 35%);
+}
+
+.design-preview-trigger[data-hovered="true"] .design-preview-inline {
+  position: fixed;
+  inset: 0;
+  z-index: 71;
+  margin: auto;
+  /* Keep the button as the hover target while the video moves. */
+  pointer-events: none;
+}
+
+.design-preview-expanded,
+.design-preview-trigger[data-hovered="true"] .design-preview-inline {
+  width: min(46rem, calc(100vw - 2rem), calc((100dvh - 3rem) * var(--preview-ratio)));
+  height: auto;
+  aspect-ratio: var(--preview-ratio);
+  background: var(--bg);
+}
+
+.design-preview-dialog {
+  position: fixed;
+  inset: 0;
+  width: fit-content;
+  height: fit-content;
+  margin: auto;
+  overflow: visible;
+  background: transparent;
+}
+
+.design-preview-dialog::backdrop {
+  background: rgb(0 0 0 / 35%);
+}
+
+body:has(.design-preview-dialog:modal) {
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .design-preview-dialog[open],
+  .design-preview-trigger[data-hovered="true"] .design-preview-inline {
+    animation: design-preview-enter 160ms ease-out;
+  }
+
+  @keyframes design-preview-enter {
+    from { opacity: 0; transform: scale(0.97); }
+    to { opacity: 1; transform: scale(1); }
+  }
+}
+
 /* floating navbar: stays at the top; content scrolling under it blurs and fades
    gradually (no hard edge), strongest at the top of the screen */
 nav {
@@ -483,9 +543,13 @@ a:not(.button, .brand, .no-underline):focus-visible {
 }
 
 /* The arrow tip shares the native pointer's hotspot. */
-html.has-custom-cursor,
-html.has-custom-cursor * {
+html.has-custom-cursor:not(:has(.design-preview-dialog:modal)),
+html.has-custom-cursor:not(:has(.design-preview-dialog:modal)) * {
   cursor: none !important;
+}
+
+html:has(.design-preview-dialog:modal) .custom-cursor {
+  visibility: hidden;
 }
 
 .custom-cursor {
