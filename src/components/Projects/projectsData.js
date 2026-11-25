@@ -1,6 +1,7 @@
 const tallyWeb = new URL("../../assets/projects/tally/tally-web.png", import.meta.url).href;
 const tallyWeb2 = new URL("../../assets/projects/tally/tally2.png", import.meta.url).href;
 const tallyWeb3 = new URL("../../assets/projects/tally/tally3.png", import.meta.url).href;
+const tallyWeb4 = new URL("../../assets/projects/tally/tally4.png", import.meta.url).href;
 const kipWeb = new URL("../../assets/projects/kip/kip-web.png", import.meta.url).href;
 
 // `image`: import a screenshot from src/assets (default import, no braces) or use a URL.
@@ -12,7 +13,7 @@ const projects = [
         slug: "tally",
         title: "Tally - Developer CRM",
         role: "Full-Stack Developer",
-        period: "2026–present",
+        period: "November 2026",
         tags: ["Developer CRM", "Electron", "React Native"],
         site: "https://usetally-psi.vercel.app/",
         summary: "A local-first Windows CRM for solo developers to manage clients, projects, and follow-ups in one place.",
@@ -21,7 +22,7 @@ const projects = [
             "Brought project deadlines and payment tracking into the same workspace as client records.",
             "Integrated GitHub monitoring so developers can follow repository activity alongside their client work.",
         ],
-        image: [tallyWeb, tallyWeb2, tallyWeb3],
+        image: [tallyWeb, tallyWeb2, tallyWeb3, tallyWeb4],
         coverSize: { width: 1920, height: 1080 },
         background: "#F6F6F6",
     },
