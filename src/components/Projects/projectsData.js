@@ -1,4 +1,6 @@
 const tallyWeb = new URL("../../assets/projects/tally/tally-web.png", import.meta.url).href;
+const tallyWeb2 = new URL("../../assets/projects/tally/tally2.png", import.meta.url).href;
+const tallyWeb3 = new URL("../../assets/projects/tally/tally3.png", import.meta.url).href;
 const kipWeb = new URL("../../assets/projects/kip/kip-web.png", import.meta.url).href;
 
 // `image`: import a screenshot from src/assets (default import, no braces) or use a URL.
@@ -19,7 +21,7 @@ const projects = [
             "Brought project deadlines and payment tracking into the same workspace as client records.",
             "Integrated GitHub monitoring so developers can follow repository activity alongside their client work.",
         ],
-        image: [tallyWeb],
+        image: [tallyWeb, tallyWeb2, tallyWeb3],
         coverSize: { width: 1920, height: 1080 },
         background: "#F6F6F6",
     },
