@@ -1,5 +1,5 @@
 const experiences = [
-    { org: "Independent", project: "Tally", role: "Software Developer", period: "2026 - now" },
+    { org: "Independent", project: "Tally, Dynamic Isle", role: "Software Developer", period: "2026 - now" },
     { org: "AWSLC - Genesis", role: "Tech Officer", period: "2026 - now" },
     { org: "Freelance", role: "Web Developer", period: "2024 - now" },
 ]
